@@ -1,0 +1,9 @@
+version: "3.6"
+services:
+  push:
+    build: .
+
+    volumes:
+      - ./:/push
+    network_mode: "host"
+    restart: always

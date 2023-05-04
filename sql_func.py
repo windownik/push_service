@@ -1,7 +1,7 @@
 import datetime, os
 
 import psycopg2
-
+# from psycopg2 import connection
 
 password = os.environ.get("DATABASE_PASS")
 host = os.environ.get("DATABASE_HOST")
@@ -54,14 +54,23 @@ def update_user_data3(table: str,
                        f"{name2}=('{data2}'),{name3}=('{data3}'), {name4}=('{data4}') "
                        f"WHERE {id_name}='{id_data}'")
         db.commit()
-
         db.close()
 
 
+# Собираем все записи с фильтрацией по 1 параметру
+def read_push(db):
+    with db.cursor() as cursor:
+        cursor.execute(f"SELECT sending.id, all_users.push, sending.title, sending.short_text, sending.main_text, "
+                       f"sending.img_url, sending.push_type, sending.status FROM sending JOIN all_users "
+                       f"ON sending.user_id = all_users.user_id ORDER BY id LIMIT 100;")
+        data = cursor.fetchall()
+        return data
+
+
 # Удаляем строку в таблице
-def delete_line_in_table(data, table: str = 'all_categorys', name: str = 'id'):
+def delete_msg_in_db(msg_id: int):
     db = create_db_connect()
     with db.cursor() as cursor:
-        cursor.execute(f"DELETE FROM {table} WHERE {name}='{data}'")
+        cursor.execute(f"DELETE FROM sending WHERE id=%s", (msg_id,))
     db.commit()
     db.close()

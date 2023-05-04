@@ -1,17 +1,36 @@
-import os
+import datetime
 
-
-ip_server = os.environ.get("IP_SERVER")
-ip_port = os.environ.get("PORT_SERVER")
-
-ip_port = 10001 if ip_port is None else ip_port
-ip_server = "127.0.0.1" if ip_server is None else ip_server
+from push_func import send_push
+from sql_func import create_db_connect, read_push, delete_msg_in_db
 
 
 def start_push():
-    while True:
-        pass
+    db = create_db_connect()
+    try:
+        while True:
+            if not db:
+                db = create_db_connect()
+            messages = read_push(db=db)
+            for msg in messages:
+                if msg[6] == 'img':
+                    description = msg[5]
+                else:
+                    description = msg[4]
+                send_push(fcm_token=msg[1], title=msg[2], short_text=msg[3], description=description, push_type=msg[6])
+                delete_msg_in_db(msg_id=msg[0])
+
+    except Exception as _ex:
+        print('MAIN PROCESS ERROR -- ', _ex)
+    finally:
+        if db:
+            db.close()
 
 
 if __name__ == '__main__':
+    print('Start work script')
+    print(datetime.datetime.now())
+    print('###############')
     start_push()
+    print('###############')
+    print('End work script')
+    print(datetime.datetime.now())
