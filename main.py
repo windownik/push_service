@@ -15,7 +15,7 @@ def start_push():
             for msg in messages:
                 main_text = '0'
                 img_url = '0'
-                if msg[5] != '0':
+                if msg[6] == 'img':
                     img_url = msg[5]
                 else:
                     main_text = msg[4]

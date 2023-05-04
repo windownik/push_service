@@ -1,4 +1,4 @@
-import datetime, os
+import os
 
 import psycopg2
 
