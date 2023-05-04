@@ -25,38 +25,6 @@ def create_db_connect():
     return data_base
 
 
-# Делаем запись новой строки в таблицу репортов
-def write_report(cod_id: str, report_user_id: int, report_text: str):
-    data = datetime.datetime.now()
-    db = create_db_connect()
-    with db.cursor() as cursor:
-        cursor.execute(f"INSERT INTO reports (cod_id, report_user_id, report_text, data) "
-                       f"VALUES ('{cod_id}', {report_user_id}, '{report_text}', '{data}') ON CONFLICT DO NOTHING;")
-        db.commit()
-        db.close()
-
-
-# Делаем запись новой строки в базу данных
-def update_user_data3(table: str,
-                      data,
-                      name: str,
-                      data2,
-                      name2: str,
-                      data3,
-                      name3: str,
-                      data4,
-                      name4: str,
-                      id_data,
-                      id_name: str = 'tg_id'):
-    db = create_db_connect()
-    with db.cursor() as cursor:
-        cursor.execute(f"UPDATE {table} SET {name}=('{data}'),"
-                       f"{name2}=('{data2}'),{name3}=('{data3}'), {name4}=('{data4}') "
-                       f"WHERE {id_name}='{id_data}'")
-        db.commit()
-        db.close()
-
-
 # Собираем все записи с фильтрацией по 1 параметру
 def read_push(db):
     with db.cursor() as cursor:
