@@ -9,7 +9,6 @@ firebase_admin.initialize_app(cred)
 
 def send_push(fcm_token: str, title: str, short_text: str, push_type: str, main_text: str, img_url: str):
     try:
-        print(img_url)
         message = messaging.Message(
             data={'title': title,
                   'short_text': short_text,

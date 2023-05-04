@@ -1,7 +1,7 @@
 import datetime, os
 
 import psycopg2
-# from psycopg2 import connection
+
 
 password = os.environ.get("DATABASE_PASS")
 host = os.environ.get("DATABASE_HOST")
@@ -36,9 +36,7 @@ def read_push(db):
 
 
 # Удаляем строку в таблице
-def delete_msg_in_db(msg_id: int):
-    db = create_db_connect()
+def delete_msg_in_db(db, msg_id: int):
     with db.cursor() as cursor:
         cursor.execute(f"DELETE FROM sending WHERE id=%s", (msg_id,))
     db.commit()
-    db.close()
