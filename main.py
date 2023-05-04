@@ -22,7 +22,7 @@ def start_push():
                 send_push(fcm_token=msg[1], title=msg[2], short_text=msg[3], main_text=main_text, img_url=img_url,
                           push_type=msg[6])
                 delete_msg_in_db(msg_id=msg[0], db=db)
-                print(msg[0], msg[2])
+                print(f'Send to user_id: {msg[7]} | Msg type: {msg[6]} | Title: {msg[2]}')
             time.sleep(5)
 
     except Exception as _ex:
