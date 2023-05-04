@@ -10,7 +10,6 @@ ENV PYTHONUNBUFFERED 1
 
 
 RUN pip3 install aiohttp
-RUN pip3 install uvicorn fastapi
 RUN pip3 install psycopg2-binary
 RUN pip3 install firebase-admin
 

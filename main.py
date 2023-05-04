@@ -12,11 +12,14 @@ def start_push():
                 db = create_db_connect()
             messages = read_push(db=db)
             for msg in messages:
+                main_text = '0'
+                img_url = '0'
                 if msg[6] == 'img':
-                    description = msg[5]
+                    img_url = msg[5]
                 else:
-                    description = msg[4]
-                send_push(fcm_token=msg[1], title=msg[2], short_text=msg[3], description=description, push_type=msg[6])
+                    main_text = msg[4]
+                send_push(fcm_token=msg[1], title=msg[2], short_text=msg[3], main_text=main_text, img_url=img_url,
+                          push_type=msg[6])
                 delete_msg_in_db(msg_id=msg[0])
 
     except Exception as _ex:
