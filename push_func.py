@@ -3,14 +3,16 @@ import firebase_admin
 from firebase_admin import messaging
 from firebase_admin import credentials
 
-cred = credentials.Certificate("cleaner-app.json")
+cred = credentials.Certificate("orava-app.json")
 firebase_admin.initialize_app(cred)
 
 
-def send_push(fcm_token: str, title: str, short_text: str, push_type: str, main_text: str, img_url: str):
+def send_push(msg_id: int, fcm_token: str, title: str, short_text: str, push_type: str, main_text: str, img_url: str):
     try:
+        print("msg_id", msg_id)
         message = messaging.Message(
-            data={'title': title,
+            data={'msg_id': f"{msg_id}",
+                  'title': title,
                   'short_text': short_text,
                   'main_text': main_text,
                   'img_url': img_url,

@@ -29,7 +29,8 @@ def create_db_connect():
 def read_push(db):
     with db.cursor() as cursor:
         cursor.execute(f"SELECT sending.id, all_users.push, sending.title, sending.short_text, sending.main_text, "
-                       f"sending.img_url, sending.push_type, all_users.user_id FROM sending JOIN all_users "
+                       f"sending.img_url, sending.push_type, all_users.user_id, sending.msg_line_id "
+                       f"FROM sending JOIN all_users "
                        f"ON sending.user_id = all_users.user_id ORDER BY id LIMIT 100;")
         data = cursor.fetchall()
         return data
