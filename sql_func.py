@@ -25,12 +25,31 @@ def create_db_connect():
     return data_base
 
 
+def create_table_sending(db):
+    """Создаем таблицу sending"""
+    with db.cursor() as cursor:
+        cursor.execute(
+            f'''CREATE TABLE IF NOT EXISTS push_sending (
+            push_id SERIAL PRIMARY KEY,
+            user_id INTEGER DEFAULT 0,
+            title TEXT DEFAULT '0',
+            push_text TEXT DEFAULT '0',
+            push_type TEXT DEFAULT '0',
+            img_url TEXT DEFAULT '0',
+            main_msg_id BIGINT DEFAULT 0,
+            msg_json_body TEXT DEFAULT '0'
+ )''')
+        db.commit()
+
+
 # Собираем все записи с фильтрацией по 1 параметру
 def read_push(db):
     with db.cursor() as cursor:
-        cursor.execute(f"SELECT sending.id, all_users.push, sending.title, sending.short_text, sending.main_text, "
-                       f"sending.img_url, sending.push_type, all_users.user_id FROM sending JOIN all_users "
-                       f"ON sending.user_id = all_users.user_id ORDER BY id LIMIT 100;")
+        cursor.execute(f"SELECT push_sending.push_id, push_sending.title, push_sending.push_text, "
+                       f"push_sending.push_type, push_sending.img_url, push_sending.main_msg_id, "
+                       f"push_sending.msg_json_body, all_users.push "
+                       f"FROM push_sending JOIN all_users "
+                       f"ON push_sending.user_id = all_users.user_id ORDER BY id LIMIT 100;")
         data = cursor.fetchall()
         return data
 
@@ -38,5 +57,5 @@ def read_push(db):
 # Удаляем строку в таблице
 def delete_msg_in_db(db, msg_id: int):
     with db.cursor() as cursor:
-        cursor.execute(f"DELETE FROM sending WHERE id=%s", (msg_id,))
+        cursor.execute(f"DELETE FROM push_sending WHERE id=%s", (msg_id,))
     db.commit()

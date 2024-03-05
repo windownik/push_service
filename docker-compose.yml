@@ -2,7 +2,11 @@ version: "3.6"
 services:
   push:
     build: .
-
+    environment:
+      DATABASE_NAME: "cleaner_api"
+      DATABASE_HOST: "127.0.0.1"
+      DATABASE_PORT: 5432
+      DATABASE_PASS: 102015
     volumes:
       - ./:/push
     network_mode: "host"
