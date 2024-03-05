@@ -26,7 +26,7 @@ def create_db_connect():
 
 
 def create_table_sending(db):
-    """Создаем таблицу sending"""
+    """Создаем таблицу push_sending"""
     with db.cursor() as cursor:
         cursor.execute(
             f'''CREATE TABLE IF NOT EXISTS push_sending (
@@ -42,8 +42,8 @@ def create_table_sending(db):
         db.commit()
 
 
-# Собираем все записи с фильтрацией по 1 параметру
 def read_push(db):
+    """Читаем все пуш сообщения из базы данных"""
     with db.cursor() as cursor:
         cursor.execute(f"SELECT push_sending.push_id, push_sending.title, push_sending.push_text, "
                        f"push_sending.push_type, push_sending.img_url, push_sending.main_msg_id, "
@@ -54,8 +54,8 @@ def read_push(db):
         return data
 
 
-# Удаляем строку в таблице
 def delete_msg_in_db(db, msg_id: int):
+    """Удаляем пуш сообщение по id"""
     with db.cursor() as cursor:
         cursor.execute(f"DELETE FROM push_sending WHERE push_id=%s", (msg_id,))
     db.commit()
