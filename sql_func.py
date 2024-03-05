@@ -49,7 +49,7 @@ def read_push(db):
                        f"push_sending.push_type, push_sending.img_url, push_sending.main_msg_id, "
                        f"push_sending.msg_json_body, all_users.push "
                        f"FROM push_sending JOIN all_users "
-                       f"ON push_sending.user_id = all_users.user_id ORDER BY id LIMIT 100;")
+                       f"ON push_sending.user_id = all_users.user_id ORDER BY push_sending.push_id LIMIT 100;")
         data = cursor.fetchall()
         return data
 
@@ -57,5 +57,5 @@ def read_push(db):
 # Удаляем строку в таблице
 def delete_msg_in_db(db, msg_id: int):
     with db.cursor() as cursor:
-        cursor.execute(f"DELETE FROM push_sending WHERE id=%s", (msg_id,))
+        cursor.execute(f"DELETE FROM push_sending WHERE push_id=%s", (msg_id,))
     db.commit()
